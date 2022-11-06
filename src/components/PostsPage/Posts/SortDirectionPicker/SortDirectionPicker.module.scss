@@ -1,0 +1,51 @@
+@import "styles/variables";
+@import "styles/mixins";
+
+%picker_button {
+  @include resetDefaultButtonStyles;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+
+  &::after {
+    display: block;
+    width: 16px;
+    height: 16px;
+    background-color: $colorFontDisabled;
+    content: "";
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  }
+
+  &:disabled {
+    cursor: auto;
+
+    &::after {
+      display: block;
+      width: 16px;
+      height: 16px;
+      background-color: $colorAccent;
+      content: "";
+      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    }
+  }
+}
+
+.picker {
+  display: flex;
+  align-items: center;
+  margin-right: 8px;
+
+  &__button_asc {
+    @extend %picker_button;
+  }
+
+  &__button_dsc {
+    @extend %picker_button;
+
+    transform: rotate(.5turn);
+  }
+}

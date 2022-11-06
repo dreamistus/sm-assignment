@@ -1,0 +1,26 @@
+@import "styles/variables";
+
+.sender {
+  background-color: $colorButtonBase;
+  box-shadow: inset 0 -1px 0 0 $colorFontDisabled;
+
+  &:hover#{&}:not(&--selected) {
+    background-color: $colorButtonHover;
+  }
+
+  &:last-child {
+    box-shadow: none;
+  }
+
+  &--selected {
+    font-weight: bold;
+    background-color: #cbbaf3;
+  }
+
+  &__link {
+    display: block;
+    padding: 16px 8px;
+    color: unset;
+    text-decoration: none;
+  }
+}

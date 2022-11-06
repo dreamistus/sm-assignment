@@ -1,0 +1,56 @@
+@import "styles/variables";
+@import "styles/mixins";
+
+.page {
+  display: grid;
+  grid-template: auto / 1fr 4fr;
+  gap: 16px;
+  margin-top: 16px;
+  padding: 0 24px;
+}
+
+.senders_header {
+  @include sectionHeader;
+}
+
+.senders_panel {
+  position: sticky;
+  top: 68px;
+}
+
+.senders_list {
+  max-height: calc(100vh - 112px);
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.sender {
+  background-color: $colorButtonBase;
+  box-shadow: inset 0 -1px 0 0 $colorFontDisabled;
+
+  &:hover#{&}:not(&--active) {
+    background-color: $colorButtonHover;
+  }
+
+  &--active {
+    font-weight: bold;
+    background-color: #cbbaf3;
+  }
+
+  &__link {
+    display: block;
+    padding: 16px 8px;
+    color: unset;
+    text-decoration: none;
+  }
+
+  &:last-child {
+    box-shadow: none;
+  }
+}

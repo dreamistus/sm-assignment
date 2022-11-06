@@ -1,0 +1,23 @@
+@import "styles/variables";
+
+$size: 300px;
+
+.container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  width: $size;
+  height: $size;
+  padding: 24px 8px;
+  background-color: $colorCardBackground;
+  border-radius: 8px;
+  box-shadow: $boxShadow;
+  transform: translateX(-50%) translateY(-50%);
+  place-items: center;
+
+  &--loading {
+    background-color: transparent;
+    box-shadow: none;
+  }
+}

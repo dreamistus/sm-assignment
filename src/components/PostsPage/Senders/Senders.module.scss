@@ -1,0 +1,23 @@
+@import "styles/variables";
+@import "styles/mixins";
+
+.header {
+  @include sectionHeader;
+}
+
+.panel {
+  position: sticky;
+  top: 68px;
+}
+
+.list {
+  max-height: calc(100vh - 112px);
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}

@@ -1,0 +1,187 @@
+{
+    "root":true,
+    "extends":[
+      "airbnb",
+      "airbnb/hooks",
+      "airbnb-typescript",
+      "plugin:react/recommended",
+      "plugin:import/recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:sonarjs/recommended"
+    ],
+    "plugins":[
+      "@typescript-eslint",
+      "sonarjs",
+      "jsx-a11y"
+    ],
+    "settings":{
+      "react":{
+        "version":"detect"
+      },
+      "import/resolver":{
+        "typescript":{
+          
+        }
+      }
+    },
+    "parser":"@typescript-eslint/parser",
+    "parserOptions":{
+      "sourceType": "module",
+      "project": ["./tsconfig.json"],
+      "ecmaFeatures": {
+        "jsx": true
+      }
+    },
+    "env":{
+      "browser":true,
+      "es2020":true,
+      "jest": true
+    },
+    "rules":{
+      "eol-last":[
+        "error",
+        "always"
+      ],
+      "no-multiple-empty-lines":[
+        "error",
+        {
+          "max":1,
+          "maxBOF":0,
+          "maxEOF":0
+        }
+      ],
+      "@typescript-eslint/comma-dangle":[
+        "error",
+        "never"
+      ],
+      "arrow-parens":[
+        "error",
+        "as-needed"
+      ],
+      "no-trailing-spaces":"error",
+      "comma-dangle":[
+        "error",
+        "never"
+      ],
+      "max-len":[
+        2,
+        {
+          "code":120,
+          "ignoreUrls":true,
+          "ignoreStrings":true
+        }
+      ],
+      "no-console":[
+        "error",
+        {
+          "allow":[
+            "warn",
+            "info",
+            "error"
+          ]
+        }
+      ],
+      "template-curly-spacing":[
+        "error",
+        "always"
+      ],
+      "react/prop-types":"off",
+      "react-hooks/rules-of-hooks":"error",
+      "react-hooks/exhaustive-deps":"warn",
+      "react/no-unused-prop-types":"off",
+      "react/jsx-no-useless-fragment":"warn",
+      "react/function-component-definition":"off",
+      "react/require-default-props":"off",
+      "react/static-property-placement":[
+        "error",
+        "static public field"
+      ],
+      "react/jsx-curly-spacing":[
+        2,
+        {
+          "when":"always",
+          "children":true
+        }
+      ],
+      "react/jsx-closing-bracket-location":[
+        1,
+        "line-aligned"
+      ],
+      "react/jsx-indent":[
+        2,
+        2
+      ],
+      "react/jsx-indent-props":[
+        2,
+        2
+      ],
+      "react/react-in-jsx-scope":"off",
+      "import/no-named-as-default-member":0,
+      "padding-line-between-statements":[
+        "error",
+        {
+          "blankLine":"always",
+          "prev":"*",
+          "next":"return"
+        }
+      ],
+      "import/extensions":[
+        "error",
+        "ignorePackages",
+        {
+          "js":"never",
+          "mjs":"never",
+          "jsx":"never",
+          "ts":"never",
+          "tsx":"never"
+        }
+      ],
+      "import/no-extraneous-dependencies": "off",
+      "no-param-reassign": ["error", {
+        "props": true,
+        "ignorePropertyModificationsFor": [
+          "state"
+        ]
+      }],
+      "jsx-a11y/anchor-is-valid": [ "error", {
+        "components": [ "Link" ],
+        "specialLink": [ "hrefLeft", "hrefRight" ],
+        "aspects": [ "invalidHref", "preferButton" ]
+      }],
+      "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+      "jsx-a11y/label-has-associated-control": [ 2, {
+        "controlComponents": ["Input"],
+        "depth": 3
+      }]
+    },
+    "overrides":[
+      {
+        "files":[
+          "**/*.tsx",
+          "**/*.ts"
+        ],
+        "rules":{
+          "@typescript-eslint/explicit-function-return-type":"error",
+          "@typescript-eslint/explicit-member-accessibility":"off",
+          "@typescript-eslint/member-delimiter-style":"error",
+          "@typescript-eslint/no-explicit-any":[
+            "error",
+            {
+              "ignoreRestArgs":true
+            }
+          ],
+          "@typescript-eslint/explicit-module-boundary-types":"off",
+          "@typescript-eslint/type-annotation-spacing":1
+        }
+      },
+      {
+        "files":[
+          "**/*.js"
+        ],
+        "rules":{
+          "@typescript-eslint/explicit-function-return-type":"off",
+          "@typescript-eslint/explicit-module-boundary-types":"off"
+        }
+      }
+    ]
+}

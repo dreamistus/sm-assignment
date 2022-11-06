@@ -1,0 +1,10 @@
+@import "styles/mixins";
+
+.input {
+  @include inputSelectStyles;
+
+  &--stretch {
+    box-sizing: border-box;
+    width: 100%;
+  }
+}

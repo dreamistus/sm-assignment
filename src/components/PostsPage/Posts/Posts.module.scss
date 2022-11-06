@@ -1,0 +1,8 @@
+@import "styles/mixins";
+
+.header {
+  @include sectionHeader;
+
+  display: flex;
+  justify-content: space-between;
+}

@@ -1,0 +1,14 @@
+@import "styles/variables";
+
+.post {
+  margin-bottom: 8px;
+  padding: 8px;
+  background-color: $colorCardBackground;
+  border-radius: 8px;
+  box-shadow: $boxShadow;
+
+  &__header {
+    margin-bottom: 4px;
+    color: $colorFontDisabled;
+  }
+}

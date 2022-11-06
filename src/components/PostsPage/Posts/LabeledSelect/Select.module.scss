@@ -1,0 +1,17 @@
+@import "styles/mixins";
+
+.wrapper {
+  display: grid;
+  flex-shrink: 0;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: center;
+  margin-right: 8px;
+  vertical-align: baseline;
+
+  &__select {
+    @include inputSelectStyles;
+
+    align-self: stretch;
+  }
+}

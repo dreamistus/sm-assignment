@@ -1,0 +1,43 @@
+@import "styles/variables";
+
+%reset_button {
+  width: auto;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  color: inherit;
+  font: inherit;
+  line-height: normal;
+  text-align: inherit;
+  background: transparent;
+  border: none;
+  appearance: none;
+  -webkit-font-smoothing: inherit;
+  -moz-osx-font-smoothing: inherit;
+
+  &::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+  }
+}
+
+.button {
+  @extend %reset_button;
+
+  display: grid;
+  height: 32px;
+  padding: 0 16px;
+  background-color: $colorButtonBase;
+  border-radius: 4px;
+  cursor: pointer;
+  place-items: center;
+
+  &:hover#{&}:not(:disabled) {
+    background-color: $colorButtonHover;
+  }
+
+  &:disabled {
+    color: $colorFontDisabled;
+    cursor: auto;
+  }
+}
