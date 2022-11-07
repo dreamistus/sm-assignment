@@ -1,6 +1,9 @@
 import axios, { AxiosResponse } from 'axios';
 import {
-  GetPostsRequest, GetPostsResponse, RegisterRequest, RegisterResponse
+  GetPostsRequest,
+  GetPostsResponse,
+  RegisterRequest,
+  RegisterResponse
 } from './types';
 
 export const baseUrl = 'https://api.supermetrics.com/assignment';

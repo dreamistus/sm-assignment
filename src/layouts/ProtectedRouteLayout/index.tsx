@@ -1,7 +1,7 @@
-import { useAppDispatch } from 'store';
-import useAuth from 'hooks/useAuth';
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
+import { useAppDispatch } from 'store';
+import useAuth from 'hooks/useAuth';
 import Button from 'components/Button';
 import { logOut } from 'store/slices/auth';
 

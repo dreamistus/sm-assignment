@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { persistor, store } from 'store';
 import { PersistGate } from 'redux-persist/integration/react';
-// import reportWebVitals from 'reportWebVitals';
 
 import App from './App';
 
@@ -22,6 +21,4 @@ if (container) {
       </Provider>
     </React.StrictMode>
   );
-
-  // reportWebVitals(console.info);
 }
