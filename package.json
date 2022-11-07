@@ -27,7 +27,7 @@
   "scripts": {
     "start": "serve -s build",
     "start:dev": "react-scripts start",
-    "build": "run-s lint && GENERATE_SOURCEMAP=false react-scripts build",
+    "build": "run-s lint test && GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "stylelint --fix ./ eslint ./ --fix"
