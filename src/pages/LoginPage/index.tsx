@@ -31,12 +31,7 @@ const LoginPage: React.FC = () => {
     []
   );
 
-  const handleSignIn = useCallback(
-    (): void => {
-      dispatch(logIn({ name, email }));
-    },
-    [dispatch, email, name]
-  );
+  const handleSignIn = useCallback((): void => { dispatch(logIn({ name, email })); }, [dispatch, email, name]);
 
   if (clientId) {
     return <Navigate to="/posts" />;

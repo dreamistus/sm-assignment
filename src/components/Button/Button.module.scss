@@ -1,28 +1,8 @@
 @import "styles/variables";
-
-%reset_button {
-  width: auto;
-  margin: 0;
-  padding: 0;
-  overflow: visible;
-  color: inherit;
-  font: inherit;
-  line-height: normal;
-  text-align: inherit;
-  background: transparent;
-  border: none;
-  appearance: none;
-  -webkit-font-smoothing: inherit;
-  -moz-osx-font-smoothing: inherit;
-
-  &::-moz-focus-inner {
-    padding: 0;
-    border: 0;
-  }
-}
+@import "styles/mixins";
 
 .button {
-  @extend %reset_button;
+  @include resetDefaultButtonStyles;
 
   display: grid;
   height: 32px;

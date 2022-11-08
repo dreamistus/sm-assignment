@@ -5,7 +5,11 @@ import {
   AnyAction,
   ThunkDispatch
 } from '@reduxjs/toolkit';
-import { useDispatch, TypedUseSelectorHook, useSelector } from 'react-redux';
+import {
+  useDispatch,
+  useSelector,
+  TypedUseSelectorHook
+} from 'react-redux';
 import {
   persistStore,
   persistReducer,
@@ -35,13 +39,20 @@ export const store = configureStore({
   },
   middleware: defaultMiddleware => defaultMiddleware({
     serializableCheck: {
-      ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
+      ignoredActions: [
+        FLUSH,
+        REHYDRATE,
+        PAUSE,
+        PERSIST,
+        PURGE,
+        REGISTER]
     }
   })
 });
 
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
+export type UseAppDispatch = ThunkDispatch<RootState, null, AnyAction>;
 export type AppThunk<ReturnType = void> = ThunkAction<
 ReturnType,
 RootState,
@@ -51,6 +62,5 @@ Action<string>
 
 export const persistor = persistStore(store);
 
-export type UseAppDispatch = ThunkDispatch<RootState, null, AnyAction>;
 export const useAppDispatch = (): UseAppDispatch => useDispatch<AppDispatch>();
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

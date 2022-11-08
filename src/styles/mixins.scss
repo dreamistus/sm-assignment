@@ -1,14 +1,22 @@
 @mixin resetDefaultButtonStyles {
+  width: auto;
   margin: 0;
   padding: 0;
+  overflow: visible;
   color: inherit;
-  background: none;
+  font: inherit;
+  line-height: normal;
+  text-align: inherit;
+  background: transparent;
   border: none;
-  border-radius: 0;
-  outline: none;
-  box-shadow: none;
-  cursor: pointer;
   appearance: none;
+  -webkit-font-smoothing: inherit;
+  -moz-osx-font-smoothing: inherit;
+
+  &::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+  }
 }
 
 @mixin sectionHeader {

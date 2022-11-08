@@ -1,5 +1,7 @@
 # SM Frontend Assignment
-This is a simple React SPA done as a front-end assignment for SM. 
+This is a simple React SPA done as a front-end assignment for SM.
+
+https://smt-assignment.herokuapp.com
 
 ## 🎨 Features
 #### Login page 
