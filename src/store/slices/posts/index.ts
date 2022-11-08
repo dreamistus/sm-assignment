@@ -161,8 +161,10 @@ export const selectFilteredSenders = createSelector(
 
     console.info('filtering senders');
 
+    const senderFilterUppercased = senderFilter.toUpperCase();
+
     return senders
-      .filter(sender => sender.name.toUpperCase().includes(senderFilter.toUpperCase()));
+      .filter(sender => sender.name.toUpperCase().includes(senderFilterUppercased));
   }
 );
 
