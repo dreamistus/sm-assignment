@@ -1,6 +1,6 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, createSelector } from '@reduxjs/toolkit';
 import type { RootState } from 'store';
-import { Post, Sender } from 'types/posts';
+import { Post } from 'types/posts';
 import { getPosts } from 'utils/api';
 import { GetPostsResponse } from 'utils/api/types';
 
@@ -9,7 +9,19 @@ export interface PostsState {
   loading: boolean;
   isError: boolean;
   errorMessage: string | null;
+  isDescending: boolean;
+  textFilter?: string;
+  senderFilter?: string;
+  selectedSenderId?: string;
 }
+
+const initialState: PostsState = {
+  posts: [],
+  loading: false,
+  isError: false,
+  isDescending: false,
+  errorMessage: null
+};
 
 export const fetchPosts = createAsyncThunk<GetPostsResponse, number, { state: RootState }>(
   'posts/fetchPosts',
@@ -25,18 +37,23 @@ export const fetchPosts = createAsyncThunk<GetPostsResponse, number, { state: Ro
 
 );
 
-const initialState: PostsState = {
-  posts: [],
-  loading: false,
-  isError: false,
-  errorMessage: null
-};
-
 export const postsSlice = createSlice({
   name: 'posts',
   initialState,
   reducers: {
-    flushPosts: () => initialState
+    flushPosts: () => initialState,
+    setTextFilter: (state, { payload }) => {
+      state.textFilter = payload;
+    },
+    setSenderFilter: (state, { payload }) => {
+      state.senderFilter = payload;
+    },
+    toggleIsDescending: state => {
+      state.isDescending = !state.isDescending;
+    },
+    setSelectedSenderId: (state, { payload }) => {
+      state.selectedSenderId = payload;
+    }
   },
   extraReducers: builder => {
     builder
@@ -54,10 +71,66 @@ export const postsSlice = createSlice({
   }
 });
 
-export const { flushPosts } = postsSlice.actions;
+type PostsLoadingState = Pick<PostsState, 'loading' | 'isError' | 'errorMessage'>;
+export const selectLoadingState = ({ posts: { loading, isError, errorMessage } }: RootState): PostsLoadingState => (
+  { loading, isError, errorMessage });
+export const selectIsDescending = ({ posts: { isDescending } }: RootState): boolean => isDescending;
 
-export const selectPosts = ({ posts }: RootState): PostsState => posts;
-export const selectSenders = ({ posts: { posts } }: RootState): Sender[] => {
+const selectPosts = ({ posts: { posts } }: RootState): Post[] => posts;
+const selectSelectedSenderId = ({ posts: { selectedSenderId } }: RootState): string | undefined => selectedSenderId;
+const selectTextFilter = ({ posts: { textFilter } }: RootState): string | undefined => textFilter;
+const selectSenderFilter = ({ posts: { senderFilter } }: RootState): string | undefined => senderFilter;
+
+// filtering by sender dramatically limits the number of operations in dependent selectors
+// so do it first and memoize the result
+const selectFilteredBySenderPosts = createSelector(
+  selectPosts,
+  selectSelectedSenderId,
+  (posts, selectedSenderId) => {
+    if (!selectedSenderId) {
+      return posts;
+    }
+
+    console.info('filtering posts by sender');
+
+    return posts.filter(post => post.from_id === selectedSenderId);
+  }
+);
+
+// sorted posts are memoized so that filtering by text does not re-trigger sorting
+const selectSortedPosts = createSelector(
+  selectFilteredBySenderPosts,
+  selectIsDescending,
+  (posts, isDescending) => {
+    console.info('sorting posts');
+
+    return posts.slice()
+      .sort(
+        (a, b) => (isDescending ? 1 : -1) * (new Date(b.created_time).getTime() - new Date(a.created_time).getTime())
+      );
+  }
+);
+
+// finally filter posts by text
+const selectFilteredByTextPosts = createSelector(
+  selectSortedPosts,
+  selectTextFilter,
+  (sortedPosts, textFilter) => {
+    if (!textFilter) {
+      return sortedPosts;
+    }
+
+    console.info('filtering posts by text');
+
+    const filterUppercased = textFilter.toLocaleUpperCase();
+
+    return sortedPosts.filter(post => post.message.toUpperCase().includes(filterUppercased));
+  }
+);
+
+export const selectSenders = createSelector(selectPosts, posts => {
+  console.info('build senders list');
+
   const uniqueSenderIds = new Map<string, number>();
 
   return posts
@@ -76,6 +149,29 @@ export const selectSenders = ({ posts: { posts } }: RootState): Sender[] => {
     })
     .map(sender => ({ ...sender, postsCount: uniqueSenderIds.get(sender.id) ?? 0 }))
     .sort((a, b) => a.name.localeCompare(b.name));
-};
+});
 
+export const selectFilteredSenders = createSelector(
+  selectSenders,
+  selectSenderFilter,
+  (senders, senderFilter) => {
+    if (!senderFilter) {
+      return senders;
+    }
+
+    console.info('filtering senders');
+
+    return senders
+      .filter(sender => sender.name.toUpperCase().includes(senderFilter.toUpperCase()));
+  }
+);
+
+export const selectFilteredPosts = selectFilteredByTextPosts;
+export const {
+  flushPosts,
+  setSenderFilter,
+  setTextFilter,
+  toggleIsDescending,
+  setSelectedSenderId
+} = postsSlice.actions;
 export default postsSlice.reducer;

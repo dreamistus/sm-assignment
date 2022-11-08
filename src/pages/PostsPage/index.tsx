@@ -1,13 +1,21 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, {
   useCallback,
-  useEffect,
-  useMemo,
-  useState
+  useEffect
 } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'store';
-import { fetchPosts, selectPosts, selectSenders } from 'store/slices/posts';
+import {
+  fetchPosts,
+  selectFilteredPosts,
+  selectFilteredSenders,
+  selectIsDescending,
+  selectLoadingState,
+  setSelectedSenderId,
+  setSenderFilter,
+  setTextFilter,
+  toggleIsDescending
+} from 'store/slices/posts';
 import Posts from 'components/PostsPage/Posts';
 import Senders from 'components/PostsPage/Senders';
 import Loader from 'components/Loader';
@@ -15,62 +23,48 @@ import Loader from 'components/Loader';
 import styles from './PostsPage.module.scss';
 
 const PostsPage: React.FC = () => {
+  const dispatch = useAppDispatch();
   const {
-    posts,
     loading,
     isError,
     errorMessage
-  } = useAppSelector(selectPosts);
-  const senders = useAppSelector(selectSenders);
-  const dispatch = useAppDispatch();
+  } = useAppSelector(selectLoadingState);
+  const isDescending = useAppSelector(selectIsDescending);
+  const filteredSenders = useAppSelector(selectFilteredSenders);
+  const filteredPosts = useAppSelector(selectFilteredPosts);
+
   const { senderId: selectedSenderId, page } = useParams();
   const navigate = useNavigate();
 
-  const [senderFilter, setSenderFilter] = useState<string>();
-  const [postFilter, setPostFilter] = useState<string>();
-  const [isDescending, setIsDescending] = useState(false);
-
   const pageNum = parseInt(page ?? '', 10);
 
-  const handleIsDescendingToggled = useCallback(() => setIsDescending(prevState => !prevState), []);
+  const handleIsDescendingToggled = useCallback(() => dispatch(toggleIsDescending()), [dispatch]);
+  const handleSenderNameFilterChanged = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setSenderFilter(event.target.value));
+  }, [dispatch]);
+  const handlePostFilterChanged = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setTextFilter(event.target.value));
+  }, [dispatch]);
   const handlePageNumberChanged = useCallback(
     (event: React.ChangeEvent<HTMLSelectElement>) => {
       navigate(`/posts/${ event.target.value }`);
     },
     [navigate]
   );
-  const handleSenderNameFilterChanged = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setSenderFilter(event.target.value);
-  }, []);
-  const handlePostFilterChanged = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setPostFilter(event.target.value);
-  }, []);
 
-  const filteredPosts = useMemo(
-    () => {
-      const filteredBySender = selectedSenderId ? posts.filter(post => post.from_id === selectedSenderId) : posts;
-
-      const filteredByText = postFilter
-        ? filteredBySender.filter(post => post.message.toUpperCase().includes(postFilter.toLocaleUpperCase()))
-        : filteredBySender;
-
-      return filteredByText.slice().sort(
-        (a, b) => (isDescending ? 1 : -1) * (new Date(b.created_time).getTime() - new Date(a.created_time).getTime())
-      );
-    },
-    [isDescending, postFilter, posts, selectedSenderId]
-  );
-
-  const filteredSenders = useMemo(
-    () => (senderFilter
-      ? senders.filter(sender => sender.name.toUpperCase().includes(senderFilter.toUpperCase()))
-      : senders),
-    [senderFilter, senders]
-  );
+  useEffect(() => {
+    dispatch(setSelectedSenderId(selectedSenderId));
+  }, [
+    dispatch,
+    selectedSenderId
+  ]);
 
   useEffect(() => {
     dispatch(fetchPosts(pageNum));
-  }, [dispatch, pageNum]);
+  }, [
+    dispatch,
+    pageNum
+  ]);
 
   const errorOrComponent = isError ? <div>{ `Error: ${ errorMessage }` }</div> : (
     <>
