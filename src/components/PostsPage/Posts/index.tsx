@@ -31,7 +31,13 @@ const Posts: React.FC<PostsProps> = ({
   <section>
     <header className={ styles.header }>
       <SortDirectionPicker isDescending={ isDescending } onToggle={ onIsDescendingToggled } />
-      <Select id="pages-select" label="Choose a page:" options={ pageNumbers } selected={ page } onChange={ onPageNumberChanged } />
+      <Select
+        id="pages-select"
+        label="Choose a page:"
+        options={ pageNumbers }
+        selected={ page }
+        onChange={ onPageNumberChanged }
+      />
       <Input stretch placeholder="Search post" onChange={ onPostsFilterChanged } />
     </header>
     <ul>
