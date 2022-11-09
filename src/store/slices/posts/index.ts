@@ -93,8 +93,6 @@ const selectFilteredBySenderPosts = createSelector(
       return posts;
     }
 
-    console.info('filtering posts by sender');
-
     return posts.filter(post => post.from_id === selectedSenderId);
   }
 );
@@ -103,14 +101,10 @@ const selectFilteredBySenderPosts = createSelector(
 const selectSortedPosts = createSelector(
   selectFilteredBySenderPosts,
   selectIsDescending,
-  (posts, isDescending) => {
-    console.info('sorting posts');
-
-    return posts.slice()
-      .sort(
-        (a, b) => (isDescending ? 1 : -1) * (new Date(b.created_time).getTime() - new Date(a.created_time).getTime())
-      );
-  }
+  (posts, isDescending) => posts.slice()
+    .sort(
+      (a, b) => (isDescending ? 1 : -1) * (new Date(b.created_time).getTime() - new Date(a.created_time).getTime())
+    )
 );
 
 // finally filter posts by text
@@ -122,8 +116,6 @@ const selectFilteredByTextPosts = createSelector(
       return sortedPosts;
     }
 
-    console.info('filtering posts by text');
-
     const filterUppercased = textFilter.toLocaleUpperCase();
 
     return sortedPosts.filter(post => post.message.toUpperCase().includes(filterUppercased));
@@ -131,8 +123,6 @@ const selectFilteredByTextPosts = createSelector(
 );
 
 export const selectSenders = createSelector(selectPosts, posts => {
-  console.info('build senders list');
-
   const uniqueSenderIds = new Map<string, number>();
 
   return posts
@@ -160,8 +150,6 @@ export const selectFilteredSenders = createSelector(
     if (!senderFilter) {
       return senders;
     }
-
-    console.info('filtering senders');
 
     const senderFilterUppercased = senderFilter.toUpperCase();
 
