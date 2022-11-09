@@ -60,6 +60,8 @@ export const postsSlice = createSlice({
       .addCase(fetchPosts.pending, state => {
         state.loading = true;
         state.isError = false;
+        state.senderFilter = undefined;
+        state.textFilter = undefined;
       })
       .addCase(fetchPosts.fulfilled, (state, { payload: { data } }) => {
         state.loading = false;
