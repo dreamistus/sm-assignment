@@ -25,7 +25,7 @@ const LabeledSelect: React.FC<LabeledSelectProps> = ({
       onChange={ onChange }
       value={ selected }
     >
-      { options.map(p => (<option key={ p } value={ p }>{ p }</option>)) }
+      { options.map(option => (<option key={ option } value={ option }>{ option }</option>)) }
     </select>
   </label>
 );

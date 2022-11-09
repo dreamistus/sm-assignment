@@ -1,9 +1,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import Input from 'components/Input';
+import Select from 'components/LabeledSelect';
 import type { Post } from 'types/posts';
 
-import Select from './LabeledSelect';
 import PostItem from './PostItem';
 import SortDirectionPicker from './SortDirectionPicker';
 
